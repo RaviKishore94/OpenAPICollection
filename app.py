@@ -7,12 +7,12 @@ from flask_basicauth import BasicAuth
 app = Flask(__name__)
 app.config['BASIC_AUTH_USERNAME'] = os.getenv("BASIC_AUTH_USERNAME")
 app.config['BASIC_AUTH_PASSWORD'] = os.getenv("BASIC_AUTH_PASSWORD")
+app.config['BASIC_AUTH_FORCE'] = True
 basic_auth = BasicAuth(app)
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 @app.route("/", methods=("GET", "POST"))
-@basic_auth.required
 def index():
     if request.method == "POST":
         text = request.json["text"]
@@ -30,7 +30,6 @@ def index():
     return "404 Not Found"
 
 @app.route("/chat_summary", methods=("GET", "POST"))
-@basic_auth.required
 def chat_summary():
     if request.method == "POST":
         transcript = request.json["transcript"]
@@ -48,7 +47,6 @@ def chat_summary():
     return "404 Not Found"
 
 @app.route("/chat_sentiment", methods=("GET", "POST"))
-@basic_auth.required
 def chat_sentiment():
     if request.method == "POST":
         transcript = request.json["transcript"]
@@ -66,7 +64,6 @@ def chat_sentiment():
     return "404 Not Found"
 
 @app.route("/autocorrect", methods=("GET", "POST"))
-@basic_auth.required
 def text_autocorrect():
     if request.method == "POST":
         text = request.json["text"]
@@ -84,7 +81,6 @@ def text_autocorrect():
     return "404 Not Found"
 
 @app.route("/translate", methods=("GET", "POST"))
-@basic_auth.required
 def translate():
     if request.method == "POST":
         content = request.json["content"]
@@ -103,7 +99,6 @@ def translate():
     return "404 Not Found"
 
 @app.route("/generate_qna", methods=("GET", "POST"))
-@basic_auth.required
 def qnaGenerator():
     if request.method == "POST":
         topic = request.json["topic"]
@@ -122,7 +117,6 @@ def qnaGenerator():
     return "404 Not Found"
 
 @app.route("/generate_variations", methods=("GET", "POST"))
-@basic_auth.required
 def variationsGenerator():
     if request.method == "POST":
         utterance = request.json["utterance"]
