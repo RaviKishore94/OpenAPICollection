@@ -151,3 +151,6 @@ def generate_qna_prompt(topic, count):
 
 def generate_variation_prompt(utterance, count):
     return "Provide {} variations of below utterance: \n {}".format(count, utterance)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=80)
