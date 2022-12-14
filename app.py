@@ -138,16 +138,13 @@ def variationsGenerator():
 def imageGenerator():
     if request.method == "POST":
         image = request.json["image"]
-        response = openai.Completion.create(
-            model=os.getenv("MODEL"),
-            prompt=generate_image_prompt(image),
-            temperature=0,
-            max_tokens=100,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0
+        size = request.json["size"]
+        response = openai.Image.create(
+            prompt=image,
+            n=1,
+            size=size
         )
-        return response.choices[0].text
+        return response["data"][0]['url']
 
     return "404 Not Found"
 
@@ -168,9 +165,6 @@ def generate_qna_prompt(topic, count):
 
 def generate_variation_prompt(utterance, count):
     return "Provide {} variations of below utterance: \n {}".format(count, utterance)
-
-def generate_image_prompt(image):
-    return "Generate an image of {}".format(image)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80)
